@@ -18,7 +18,7 @@ defmodule TodoAppWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    live "/page_live", TodoController, :index
+    live "/page_live", TodoAppWeb.PageLive
 
   end
 

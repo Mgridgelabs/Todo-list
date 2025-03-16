@@ -1,11 +1,39 @@
+<h1 class="text-2xl font-bold text-center my-4">✅ My Live To-Do List</h1>
 
+<!-- Form to Add a New Task -->
+<form phx-submit="create_item" class="flex gap-2 mb-4">
+  <input type="text" name="name" placeholder="New task..." required
+         class="border p-2 rounded w-full" />
+  <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+</form>
 
-<ul>
+<!-- List of Tasks -->
+<ul class="space-y-2">
   <%= for item <- @items do %>
-    <li><%= item.name %> (<%= if item.completed, do: "✔", else: "❌" %>)</li>
+    <li class="flex items-center justify-between p-2 border rounded bg-gray-100">
+      
+      <!-- Task Checkbox -->
+      <input type="checkbox" phx-click="toggle_item" phx-value-id={item.id}
+       checked={item.completed} class="mr-2 cursor-pointer" />
+
+      <!-- Task Name (Editable) -->
+      <%= if @editing.id == item.id do %>
+        <input type="text" value={@editing.name}
+               phx-blur="update_item_name"
+               phx-value-id={item.id}
+               class="border p-1 rounded w-full" />
+      <% else %>
+        <span class="cursor-pointer flex-1"
+              phx-click="update_editing" phx-value-id={item.id}>
+          <%= item.name %>
+        </span>
+      <% end %>
+
+      <!-- Delete Button -->
+      <button phx-click="delete_item" phx-value-id={item.id}
+              class="bg-red-500 text-white px-2 py-1 rounded">
+        🗑
+      </button>
+    </li>
   <% end %>
 </ul>
-<form phx-submit="create_item">
-  <input type="text" name="name" placeholder="New item" required />
-  <button type="submit">Add</button>
-</form>
